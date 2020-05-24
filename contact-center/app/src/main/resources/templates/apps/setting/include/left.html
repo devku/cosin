@@ -14,11 +14,16 @@
 				<a href="/setting/blacklist.html">黑名单</a>
 			</dd>
 			</#if>
-			<!-- 
+			<!--
 			<dd <#if subtype?? && subtype == 'acd'>class="layui-this"</#if>>
 				<a href="/setting/acd.html">ACD策略</a>
 			</dd>
 			 -->
+			<#if user?? && (user.roleAuthMap["A06_A01_A02"]?? || user.admin) >
+			<dd <#if subtype?? && subtype == 'quickreply'>class="layui-this"</#if>>
+				<a href="/setting/quickreply/index.html">快速回复</a>
+			</dd>
+			</#if>
 		</dl>
 	</li>
 </#if>

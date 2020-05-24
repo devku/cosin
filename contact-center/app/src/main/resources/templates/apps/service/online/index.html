@@ -130,7 +130,7 @@
 								<#list agentServiceList as agentService>
 								<tr class="tdHasContorllor design-dropable-td <#if curAgentService?? && curAgentService.id == agentService.id>ukefu-current-agentservice</#if> ukefu-agentservice-list">
 									<td title="${agentService.username!''}">
-										<a href="/service/online/chatmsg.html?id=${agentService.id!''}" data-toggle="load" data-target="#onlinecontent">
+										<a href="/service/online/chatmsg.html?id=${agentService.id!''}" data-toggle="ajax" data-target="#onlinecontent">
 										${agentService.username!''}
 										</a>
 									</td>

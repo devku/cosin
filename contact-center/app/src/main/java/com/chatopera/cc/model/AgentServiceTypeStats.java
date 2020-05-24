@@ -29,7 +29,7 @@ import java.util.Date;
 @Entity
 @Table(name = "uk_agentservice")
 @Proxy(lazy = false)
-public class AgentService implements Serializable {
+public class AgentServiceTypeStats implements Serializable {
 	private static final long serialVersionUID = -5052623717164550681L;
 	private String agentusername;
 	private String agentno;
@@ -132,6 +132,7 @@ public class AgentService implements Serializable {
 	private String snsuser;
 
 	private String servicetype;
+	private String count;
 
 	@Transient
 	private Date lastmessage = new Date();
@@ -866,4 +867,8 @@ public class AgentService implements Serializable {
 	public String getServicetype() { return this.servicetype;}
 
 	public void setServicetype(String servicetype) {this.servicetype = servicetype;}
+
+	public String getCount() {return this.count;}
+
+	public void setCount(String count) {this.count = count;}
 }

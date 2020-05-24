@@ -79,9 +79,6 @@ public class IMController extends Handler {
     @Autowired
     private OnlineUserRepository onlineUserRes;
 
-    @Value("${uk.im.server.host}")
-    private String host;
-
     @Value("${uk.im.server.port}")
     private Integer port;
 
@@ -141,6 +138,9 @@ public class IMController extends Handler {
 
     @Autowired
     private ChatbotRepository chatbotRes;
+
+    @Autowired
+    private GuestRecordRepository guestRecordRepository;
 
     @Autowired
     private Cache cache;
@@ -685,6 +685,11 @@ public class IMController extends Handler {
                     boolean isInWorkingHours = MainUtils.isInWorkingHours(sessionConfig.getWorkinghours());
                     map.addAttribute("isInWorkingHours", isInWorkingHours);
                     view = request(super.createRequestPageTempletResponse("/apps/im/leavemsg"));
+
+                    GuestRecord gr = new GuestRecord();
+                    gr.setCreatetime(new Date());
+                    guestRecordRepository.save(gr);
+
                 } else if (invite.isConsult_info()) {    //启用了信息收集，从Request获取， 或从 Cookies 里去
                     // 验证 OnlineUser 信息
                     if (contacts != null && StringUtils.isNotBlank(

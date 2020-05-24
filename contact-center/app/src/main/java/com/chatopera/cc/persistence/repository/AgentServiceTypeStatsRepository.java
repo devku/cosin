@@ -28,8 +28,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface AgentServiceRepository
-  extends JpaRepository<AgentService, String>
+public interface AgentServiceTypeStatsRepository
+  extends JpaRepository<AgentServiceTypeStats, String>
 {
   AgentService findByIdAndOrgi(String paramString, String orgi);
   
@@ -53,4 +53,17 @@ public interface AgentServiceRepository
   List<AgentService> findByUseridAndOrgiAndStatus(String userid, String orgi, String status, Sort sort);
   
   Page<AgentService> findAll(Specification<AgentService> spec, Pageable pageable);  //分页按条件查询
+
+  //@Query(value = "select servicetype, count(servicetype) from uk_agentservice where servicetype != '' and servicetype != 'NULL' group by servicetype", nativeQuery = true)
+  @Query(value = "select *, count(servicetype) as count from uk_agentservice where servicetype != '' and servicetype != 'NULL' group by servicetype", nativeQuery = true)
+  List<AgentServiceTypeStats> getServicetypeStats();
+
+  @Query(value = "select *, count(servicetype) as count from uk_agentservice where servicetype != '' and servicetype != 'NULL' and logindate >= ?1 and logindate <= ?2 group by servicetype", nativeQuery = true)
+  List<AgentServiceTypeStats> getServicetypeStatsByTime(String start, String end);
+
+  @Query(value = "select *, count(servicetype) as count from uk_agentservice where servicetype != '' and servicetype != 'NULL' and logindate >= ?1 group by servicetype", nativeQuery = true)
+  List<AgentServiceTypeStats> getServicetypeStatsByStart(String start);
+
+  @Query(value = "select *, count(servicetype) as count from uk_agentservice where servicetype != '' and servicetype != 'NULL' and logindate <= ?1 group by servicetype", nativeQuery = true)
+  List<AgentServiceTypeStats> getServicetypeStatsByEnd(String end);
 }

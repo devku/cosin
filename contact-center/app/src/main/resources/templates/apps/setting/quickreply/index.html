@@ -1,9 +1,14 @@
 <link rel="stylesheet" href="/js/ztree/zTreeStyle/zTreeStyle.css">
 <script src="/js/ztree/jquery.ztree.all.min.js"></script>
 
-<div class="layui-side layui-bg-black layui-layout-content ukefu-tab">
+<div class="layui-side layui-bg-black layui-layout-content">
+	<div class="layui-side-scroll">
+		<#include "/apps/setting/include/left.html"/></div>
+</div>
+<!--
+<div class="layui-bg-black layui-layout-content ukefu-tab">
 	<div class="row">
-		<div class="col-lg-12">
+		<div class="col-lg-3">
 			<h1 class="site-h1">
 				问答分类
 				<span style="float:right;">
@@ -18,7 +23,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div>-->
 <div class="layui-body" id="ukefu-quickreply-content">
 	<#include "/apps/setting/quickreply/replylist.html">
 </div>

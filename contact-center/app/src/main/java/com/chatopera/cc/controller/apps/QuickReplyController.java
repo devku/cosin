@@ -116,7 +116,8 @@ public class QuickReplyController extends Handler {
 			quickReply.setType(MainContext.QuickType.PUB.toString());
 			quickReplyRes.save(quickReply) ;
     	}
-        return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html?typeid="+quickReply.getCate()));
+		return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html"));
+        //return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html?typeid="+quickReply.getCate()));
     }
     
     @RequestMapping("/delete")
@@ -126,7 +127,8 @@ public class QuickReplyController extends Handler {
     	if(quickReply!=null){
     		quickReplyRes.delete(quickReply);
     	}
-    	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html?typeid="+quickReply.getCate()));
+		return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html"));
+    	//return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html?typeid="+quickReply.getCate()));
     }
     @RequestMapping("/edit")
     @Menu(type = "setting" , subtype = "quickreply" , admin= true)
@@ -153,7 +155,8 @@ public class QuickReplyController extends Handler {
     		quickReply.setType(MainContext.QuickType.PUB.toString());
     		quickReplyRes.save(quickReply) ;
     	}
-    	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html?typeid="+quickReply.getCate()));
+		return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html"));
+    	//return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html?typeid="+quickReply.getCate()));
     }
     
     @RequestMapping({"/addtype"})

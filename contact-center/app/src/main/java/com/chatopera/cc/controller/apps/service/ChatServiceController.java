@@ -77,6 +77,15 @@ public class ChatServiceController extends Handler {
     private AgentServiceRepository agentServiceRes;
 
     @Autowired
+    private AgentServiceTypeStatsRepository agentServiceTypeStatsRes;
+
+    @Autowired
+    private AgentServiceResponseStatsRepository agentServiceResponseStatsRes;
+
+    @Autowired
+    private AgentServiceStatsDayRepository agentServiceStatsDayRes;
+
+    @Autowired
     private AgentUserRepository agentUserRes;
 
     @Autowired
@@ -561,5 +570,128 @@ public class ChatServiceController extends Handler {
             leaveMsgRes.delete(id);
         }
         return request(super.createRequestPageTempletResponse("redirect:/service/leavemsg/index.html"));
+    }
+
+    @RequestMapping("/stats/servicetype")
+    @Menu(type = "service", subtype = "statsservicetype", admin = true)
+    public ModelAndView servicetype(ModelMap map, HttpServletRequest request, final String username, final String channel, final String servicetype, final String allocation, final String servicetimetype, final String begin, final String end) {
+        Boolean hasBegin = false;
+        Boolean hasEnd = false;
+        List<AgentServiceTypeStats> page;
+        if (StringUtils.isNotBlank(begin) && begin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2}")) {
+            hasBegin = true;
+        }
+        if (StringUtils.isNotBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2}")) {
+            hasEnd = true;
+        }
+        if (hasBegin && hasEnd) {
+            page = agentServiceTypeStatsRes.getServicetypeStatsByTime(begin, end);
+        } else if (hasBegin) {
+            page = agentServiceTypeStatsRes.getServicetypeStatsByStart(begin);
+        } else if (hasEnd) {
+            page = agentServiceTypeStatsRes.getServicetypeStatsByEnd(end);
+        } else {
+            page = agentServiceTypeStatsRes.getServicetypeStats();
+        }
+        map.put("agentServiceList", page);
+        map.put("username", username);
+        map.put("channel", channel);
+        map.put("servicetype", servicetype);
+        map.put("servicetimetype", servicetimetype);
+        map.put("allocation", allocation);
+        map.put("begin", begin);
+        map.put("end", end);
+        map.put("deptlist", organ.findByOrgi(super.getOrgi(request)));
+        map.put("userlist", user.findByOrgiAndDatastatus(super.getOrgi(request), false));
+
+        return request(super.createAppsTempletResponse("/apps/service/stats/servicetype"));
+    }
+
+    @RequestMapping("/stats/agentserviceresponse")
+    @Menu(type = "service", subtype = "statsagentserviceresponse", admin = true)
+    public ModelAndView agentserviceresponse(ModelMap map, HttpServletRequest request, final String username, final String channel, final String servicetype, final String allocation, final String servicetimetype, final String begin, final String end) {
+        Page<AgentServiceResponseStats> page = agentServiceResponseStatsRes.findAll(new Specification<AgentServiceResponseStats>() {
+            @Override
+            public Predicate toPredicate(Root<AgentServiceResponseStats> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                List<Predicate> list = new ArrayList<Predicate>();
+                if (StringUtils.isNotBlank(servicetype) && StringUtils.isNotBlank(allocation)) {
+                    list.add(cb.equal(root.get(servicetype).as(String.class), allocation));
+                }
+                    try {
+                        if (StringUtils.isNotBlank(begin) && begin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2}")) {
+                            list.add(cb.greaterThanOrEqualTo(
+                                    root.get("statsdate").as(Date.class),
+                                    MainUtils.simpleDateFormat.parse(begin)));
+                        }
+                        if (StringUtils.isNotBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2}")) {
+                            list.add(cb.lessThanOrEqualTo(
+                                    root.get("statsdate").as(Date.class),
+                                    MainUtils.dateFormate.parse(end + " 23:59:59")));
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                Predicate[] p = new Predicate[list.size()];
+                return cb.and(list.toArray(p));
+            }
+        }, new PageRequest(super.getP(request), super.getPs(request), Direction.DESC, "statsdate"));
+
+        map.put("agentServiceList", page);
+        map.put("username", username);
+        map.put("channel", channel);
+        map.put("servicetype", servicetype);
+        map.put("servicetimetype", servicetimetype);
+        map.put("allocation", allocation);
+        map.put("begin", begin);
+        map.put("end", end);
+        map.put("deptlist", organ.findByOrgi(super.getOrgi(request)));
+        map.put("userlist", user.findByOrgiAndDatastatus(super.getOrgi(request), false));
+
+        return request(super.createAppsTempletResponse("/apps/service/stats/agentserviceresponse"));
+    }
+
+    @RequestMapping("/stats/agentservicestatsday")
+    @Menu(type = "service", subtype = "agentservicestatsday", admin = true)
+    public ModelAndView agentservicestatsday(ModelMap map, HttpServletRequest request, final String username, final String channel, final String servicetype, final String allocation, final String servicetimetype, final String begin, final String end) {
+        Page<AgentServiceStatsDay> page = agentServiceStatsDayRes.findAll(new Specification<AgentServiceStatsDay>() {
+            @Override
+            public Predicate toPredicate(Root<AgentServiceStatsDay> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                List<Predicate> list = new ArrayList<Predicate>();
+                if (StringUtils.isNotBlank(servicetype) && StringUtils.isNotBlank(allocation)) {
+                    list.add(cb.equal(root.get(servicetype).as(String.class), allocation));
+                }
+                try {
+                    if (StringUtils.isNotBlank(begin) && begin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2}")) {
+                        list.add(cb.greaterThanOrEqualTo(
+                                root.get("statsdate").as(Date.class),
+                                MainUtils.simpleDateFormat.parse(begin)));
+                    }
+                    if (StringUtils.isNotBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2}")) {
+                        list.add(cb.lessThanOrEqualTo(
+                                root.get("statsdate").as(Date.class),
+                                MainUtils.dateFormate.parse(end + " 23:59:59")));
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Predicate[] p = new Predicate[list.size()];
+                return cb.and(list.toArray(p));
+            }
+        }, new PageRequest(super.getP(request), super.getPs(request), Direction.DESC, "statsdate"));
+
+        map.put("agentServiceList", page);
+        map.put("username", username);
+        map.put("channel", channel);
+        map.put("servicetype", servicetype);
+        map.put("servicetimetype", servicetimetype);
+        map.put("allocation", allocation);
+        map.put("begin", begin);
+        map.put("end", end);
+        map.put("deptlist", organ.findByOrgi(super.getOrgi(request)));
+        map.put("userlist", user.findByOrgiAndDatastatus(super.getOrgi(request), false));
+
+        return request(super.createAppsTempletResponse("/apps/service/stats/agentservicestatsday"));
     }
 }

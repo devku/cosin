@@ -1,6 +1,8 @@
 <script language="javascript">
     cursession = "<#if curagentuser??>${curagentuser.userid!''}</#if>" ;
-    var userid = "${curagentuser.userid!''}" , agentserviceid = "${curagentuser.agentserviceid!''}" , agentuserid = "${curagentuser.id}" , masscuragentuser = "${masscuragentuser}" , isAisuggest = "${aisuggest}";
+    var userid = "${curagentuser.userid!''}" , agentserviceid = "${curagentuser.agentserviceid!''}" , agentuserid = "${curagentuser.id}" , masscuragentuser = "${masscuragentuser}" , isAisuggest = true;//"${aisuggest}";
+    <#assign quickReplyList = quickReplyList>
+
 </script>
 
 <div class="main-agentuser">
@@ -9,6 +11,23 @@
             <div style="width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-wrap: break-word;
 word-break: break-all;"><#if curagentuser??>${curagentuser.username!''}<#if curagentuser.region??>  （ ${curagentuser.region!''} </#if></div>
     <div style="float:right;" class="ukefu-service-btn">
+
+        <div class="layui-btn-group ukefu-btn-group">
+        <button class="layui-btn layui-btn-small dropdown-menu">
+            <i class="kfont">&#xe672;</i> 快速回复
+            <i class="layui-icon">&#xe625;</i>
+        </button>
+        <ul class="ukefu-dropdown-menu layui-anim layui-anim-upbit">
+            <#list quickReplyList as quickReply>
+                <li>
+                    <a href="javascript:void(0)" onclick="chooseAnswer('${quickReply.content}')">
+                        ${quickReply.title!''}
+                    </a>
+                </li>
+            </#list>
+        </ul>
+        </div>
+
         <a href="/agent/summary.html?userid=${curagentuser.userid!''}&agentserviceid=${curagentuser.agentserviceid!''}&agentuserid=${curagentuser.id}&channel=${curagentuser.channel}" data-toggle="ajax" data-width="950" data-height="450" title="记录服务小结"><button class="layui-btn layui-btn-small"><i class="kfont">&#xe65c;</i> 服务小结</button></a>
         <a href="/agent/transfer.html?userid=${curagentuser.userid!''}&agentserviceid=${curagentuser.agentserviceid!''}&agentuserid=${curagentuser.id}" data-toggle="ajax" data-width="750" data-height="550" title="选择转接对象"><button class="layui-btn layui-btn-small"><i class="kfont">&#xe7be;</i> 转接坐席</button></a>
         <a href="javascript:void(0)" onclick="submitEndAgentUser('${curagentuser.id}','${curagentuser.username}')"><button class="layui-btn layui-btn-small layui-btn-danger"><i class="kfont">&#xe621;</i> 结束对话</button></a>
@@ -258,7 +277,7 @@ word-break: break-all;"><#if curagentuser??>${curagentuser.username!''}<#if cura
                             <#if curagentuser.name??>
                             <ul class="info-list">
                                 <li>
-                                    姓名：
+                                    账号：
                                     <span class="tgreen">
                                         ${curagentuser.name!''}
                                         </span>
@@ -594,6 +613,10 @@ word-break: break-all;"><#if curagentuser??>${curagentuser.username!''}<#if cura
         editor.html('');
         showOrHide('none');
     };
+
+    function setMessage(msg) {
+
+    }
 
     function chooseAnswer(data){
         editor.html(data)

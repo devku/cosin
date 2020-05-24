@@ -40,4 +40,6 @@ public interface QuickReplyEsCommonRepository {
 	void deleteByCate(String cate, String orgi) ;
 
 	List<QuickReply> getQuickReplyByOrgi(String orgi, String cate, String type, String q);
+
+	//List<QuickReply> findByOrgi(String orgi);
 }

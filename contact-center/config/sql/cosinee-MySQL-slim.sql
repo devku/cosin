@@ -579,7 +579,11 @@ CREATE TABLE `uk_agentservice` (
   `aiid` varchar(32) DEFAULT NULL COMMENT 'AIID',
   `aiservice` tinyint(4) DEFAULT '0' COMMENT '是否AI服务',
   `foragent` tinyint(4) DEFAULT '0' COMMENT '直接转人工',
-  PRIMARY KEY (`id`) USING BTREE
+  `servicetype` varchar(32) DEFAULT NULL COMMENT '问题归类',
+  `agentfirstmsgtime` datetime DEFAULT NULL,
+  `userfirstmsgtime` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `servicetype-index` (`servicetype`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='在线客服服务记录表';
 
 
@@ -7876,7 +7880,7 @@ CREATE TABLE `uk_systemconfig` (
 -- Records of uk_systemconfig
 -- ----------------------------
 BEGIN;
-INSERT INTO `uk_systemconfig` VALUES ('2c93809364e0a6d00164ef6722270582', NULL, '春松客服-全渠道智能客服', NULL, 'cskefu', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '4028cac3614cd2f901614cf8be1f0324', '2018-07-31 08:14:30', NULL, NULL, NULL, NULL, NULL, '01', 'info', 0, NULL, NULL, '', 0, 0, '', '', '', '', '', '', NULL, 0, 0, 0, 0, '', '', NULL, NULL, '', '', NULL, 0, 0, NULL, NULL, NULL, 0, '', NULL, 0, 0, '租户', 0, 0, NULL, NULL, NULL);
+INSERT INTO `uk_systemconfig` VALUES ('2c93809364e0a6d00164ef6722270582', NULL, '顶博客服-全渠道智能客服', NULL, 'cskefu', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '4028cac3614cd2f901614cf8be1f0324', '2018-07-31 08:14:30', NULL, NULL, NULL, NULL, NULL, '01', 'info', 0, NULL, NULL, '', 0, 0, '', '', '', '', '', '', NULL, 0, 0, 0, 0, '', '', NULL, NULL, '', '', NULL, 0, 0, NULL, NULL, NULL, 0, '', NULL, 0, 0, '租户', 0, 0, NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -8831,5 +8835,40 @@ CREATE TABLE `uk_xiaoe_words_type` (
   `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='词库类型';
+
+
+DROP TABLE IF EXISTS `uk_agent_response_stats`;
+CREATE TABLE `uk_agent_response_stats` (
+  `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `agentno` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `agentusername` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `skill` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `maxfirstresptime` int(11) NOT NULL,
+  `minfirstresptime` int(11) NOT NULL,
+  `avgfirstresptime` int(11) NOT NULL,
+  `servicecount` int(11) NOT NULL,
+  `quitservicecount` int(11) NOT NULL,
+  `statsdate` date NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `agentusername` (`agentusername`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `uk_agentservice_stats_day`;
+CREATE TABLE `uk_agentservice_stats_day` (
+  `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `servicecount` int(11) NOT NULL,
+  `guestcount` int(11) NOT NULL,
+  `leavemsgcount` int(11) NOT NULL,
+  `statsdate` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `uk_guest_record`;
+CREATE TABLE `uk_guest_record` (
+  `id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `createtime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 SET FOREIGN_KEY_CHECKS = 1;

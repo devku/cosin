@@ -1,6 +1,6 @@
 <?xml version='1.0' ?>
 <Schema name='ukefu'>
-	<Cube name='咨询'>
+	<Cube name='consult'>
 		<View alias="agentservice">
 			<SQL>
 			<![CDATA[

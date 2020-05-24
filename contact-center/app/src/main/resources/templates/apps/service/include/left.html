@@ -41,6 +41,21 @@
 					<a href="/service/stats/agent.html">客服坐席</a>
 				</dd>
 			</#if>
+			<#if user?? && (user.roleAuthMap["A08_A02_A02"]?? || user.admin) >
+				<dd <#if subtype?? && subtype == 'statsservicetype'>class="layui-this"</#if>>
+					<a href="/service/stats/servicetype.html">主题统计</a>
+				</dd>
+			</#if>
+			<#if user?? && (user.roleAuthMap["A08_A02_A02"]?? || user.admin) >
+				<dd <#if subtype?? && subtype == 'statsagentserviceresponse'>class="layui-this"</#if>>
+					<a href="/service/stats/agentserviceresponse.html">客服响应</a>
+				</dd>
+			</#if>
+			<#if user?? && (user.roleAuthMap["A08_A02_A02"]?? || user.admin) >
+				<dd <#if subtype?? && subtype == 'agentservicestatsday'>class="layui-this"</#if>>
+					<a href="/service/stats/agentservicestatsday.html">有效率</a>
+				</dd>
+			</#if>
 		</dl>
 	</li>
 </#if>

@@ -31,6 +31,7 @@ import com.chatopera.cc.proxy.UserProxy;
 import com.chatopera.cc.util.Menu;
 import com.chatopera.cc.util.RestResult;
 import com.chatopera.cc.util.RestResultType;
+import com.chatopera.cc.util.SystemEnvHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -314,8 +315,24 @@ public class ApiUserController extends Handler {
         // 创建新用户时，阻止传入ID
         payload.remove("id");
         newUser = userProxy.parseUserFromJson(payload);
-        final String msg = userProxy.createNewUser(
-                newUser, logined.getOrgi(), logined.getOrgid(), super.getOrgiByTenantshare(request));
+        String msg;
+
+        //check user limit
+        int maxUser = 0;
+        String maxUserLimit = SystemEnvHelper.getenv("MAX_USER", "0");
+        try {
+            maxUser = Integer.parseInt(maxUserLimit);
+        } catch (Exception e) {
+            msg = "Interal Server Error";
+        }
+        final String orgi = logined.getOrgi();
+        List<User>userList = userRes.findByOrgi(orgi);
+        if (maxUser > 0 && userList.size() >= maxUser) {
+            msg = Integer.toString(userList.size());
+        } else {
+            msg = userProxy.createNewUser(
+                    newUser, logined.getOrgi(), logined.getOrgid(), super.getOrgiByTenantshare(request));
+        }
 
         if (StringUtils.isNotBlank(msg)) {
             resp.addProperty(RestUtils.RESP_KEY_RC, RestUtils.RESP_RC_SUCC);

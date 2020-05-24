@@ -1121,6 +1121,9 @@
              summary.setEmail(service.getEmail());
              summary.setPhonenumber(service.getPhone());
              serviceSummaryRes.save(summary);
+             Tag tag = tagRes.findByOrgiAndId(orgi, summary.getServicetype());
+             service.setServicetype(tag.getTag());
+             agentServiceRes.save(service);
          }
 
          return request(super.createRequestPageTempletResponse(

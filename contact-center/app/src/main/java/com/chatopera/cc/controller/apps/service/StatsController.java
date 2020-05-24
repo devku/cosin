@@ -68,7 +68,7 @@ public class StatsController extends Handler {
         logger.info("[statcoment] agent {}, skill {}, begin {}, end {}", agent, skill, begin, end);
         Map<String, Object> mapR = MainUtils.getRequestParam(request);
         mapR.put("orgi", super.getOrgi(request));
-        ReportData reportData = new CubeService("coment.xml", path, dataSource, mapR).execute("SELECT [comment].[满意度].members on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [满意度]");
+        ReportData reportData = new CubeService("coment.xml", path, dataSource, mapR).execute("SELECT [comment].[满意度].members on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [coment]");
 
         List<SysDic> dicList = Dict.getInstance().getDic(Constants.CSKEFU_SYSTEM_COMMENT_DIC);
         for (Level title : reportData.getCol().getChilderen()) {
@@ -110,7 +110,7 @@ public class StatsController extends Handler {
     public void statcomentexp(ModelMap map, HttpServletRequest request, HttpServletResponse response, @Valid String agent, @Valid String skill, @Valid String begin, @Valid String end) throws Exception {
         Map<String, Object> mapR = MainUtils.getRequestParam(request);
         mapR.put("orgi", super.getOrgi(request));
-        ReportData reportData = new CubeService("coment.xml", path, dataSource, mapR).execute("SELECT [comment].[满意度].members on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [满意度]");
+        ReportData reportData = new CubeService("coment.xml", path, dataSource, mapR).execute("SELECT [comment].[满意度].members on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [coment]");
 
         List<SysDic> dicList = Dict.getInstance().getDic(Constants.CSKEFU_SYSTEM_COMMENT_DIC);
         for (Level title : reportData.getCol().getChilderen()) {
@@ -132,7 +132,7 @@ public class StatsController extends Handler {
     public ModelAndView statagent(ModelMap map, HttpServletRequest request, @Valid String agent, @Valid String skill, @Valid String begin, @Valid String end) throws Exception {
         Map<String, Object> mapR = MainUtils.getRequestParam(request);
         mapR.put("orgi", super.getOrgi(request));
-        ReportData reportData = new CubeService("consult.xml", path, dataSource, mapR).execute("SELECT {[Measures].[咨询数量],[Measures].[平均等待时长（秒）],[Measures].[平均咨询时长（秒）]} on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [咨询]");
+        ReportData reportData = new CubeService("consult.xml", path, dataSource, mapR).execute("SELECT {[Measures].[咨询数量],[Measures].[平均等待时长（秒）],[Measures].[平均咨询时长（秒）]} on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [consult]");
         map.addAttribute("reportData", reportData);
 
         if (StringUtils.isNotBlank(agent)) {
@@ -164,7 +164,7 @@ public class StatsController extends Handler {
     public void statagentexp(ModelMap map, HttpServletRequest request, HttpServletResponse response, @Valid String agent, @Valid String skill, @Valid String begin, @Valid String end) throws Exception {
         Map<String, Object> mapR = MainUtils.getRequestParam(request);
         mapR.put("orgi", super.getOrgi(request));
-        ReportData reportData = new CubeService("consult.xml", path, dataSource, mapR).execute("SELECT {[Measures].[咨询数量],[Measures].[平均等待时长（秒）],[Measures].[平均咨询时长（秒）]} on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [咨询]");
+        ReportData reportData = new CubeService("consult.xml", path, dataSource, mapR).execute("SELECT {[Measures].[咨询数量],[Measures].[平均等待时长（秒）],[Measures].[平均咨询时长（秒）]} on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [consult]");
         response.setHeader("content-disposition", "attachment;filename=UCKeFu-Report-" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ".xls");
         new UKExcelUtil(reportData, response.getOutputStream(), "客服坐席统计").createFile();
 
