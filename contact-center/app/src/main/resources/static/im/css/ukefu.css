@@ -883,6 +883,9 @@ p.submitBtnWrap {
 .ukefu-im-theme .arrow6 {
     border-color: #FFFFFF #FFFFFF #FF626F !important;
 }
+.ukefu-im-theme .arrow8 {
+    border-color: #FFFFFF #FFFFFF black !important;
+}
 .ukefu-media-image{
 	max-height:150px;
 	max-width:200px;
