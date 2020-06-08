@@ -375,10 +375,10 @@
         <div class="content-left">
             <div class="chat-above" id="above">
             	<#if welcomeAd>
-            	<div class="clearfix message  welcome" style="position: absolute; z-index:9999">
+				<div class="clearfix <#if welcomeAd.adtype !="image">message</#if>  welcome">
             		<span id="welcome-message">
             			<#if welcomeAd.adtype =="image">
-						<a href='${welcomeAd.url!''}' title='${welcomeAd.tiptext!''}' target='_blank'><img src='${welcomeAd.imgurl!''}' style='max-width:100%;max-height:178px;margin:0px;vertical-align: middle;'/></a>
+						<a href='${welcomeAd.url!''}' title='${welcomeAd.tiptext!''}' target='_blank'><img src='${welcomeAd.imgurl!''}' style='width:100%;max-height:178px;margin:0px;vertical-align: middle;'/></a>
 						<#else>
 						<div style='padding:0px 5px 10px 5px;border-bottom:1px solid #dedede;'><a href='${welcomeAd.url!''}' title='${welcomeAd.tiptext!''}' target='_blank' id='point_ad_text'>${(welcomeAd.content!'')?no_esc}</a></div>
 						</#if>

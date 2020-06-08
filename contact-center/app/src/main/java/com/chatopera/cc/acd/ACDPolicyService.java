@@ -96,6 +96,11 @@ public class ACDPolicyService {
      * @return
      */
     public AgentStatus decideAgentStatusWithIdleAgent(final List<AgentStatus> agentStatuses) {
+        final long l = System.currentTimeMillis();
+        final int i = (int)( l % agentStatuses.size() );
+        if (agentStatuses.get(i).getUsers() == 0) {
+            return agentStatuses.get(i);
+        }
         for (final AgentStatus o : agentStatuses) {
             if (o.getUsers() == 0) {
                 logger.info("[decideAgentStatusWithIdleAgent] choose agentno {} by idle status.", o.getAgentno());

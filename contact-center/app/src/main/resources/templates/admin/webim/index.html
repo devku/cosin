@@ -198,6 +198,9 @@
 													<i
 														class="layui-icon ukefu-im-check">&#xe618;</i>
 												</div>
+												<div class="ukefu-im-item theme8 <#if inviteData?? && inviteData.consult_vsitorbtn_color?? && inviteData.consult_vsitorbtn_color == '8'>ukefu-im-checked</#if>" data-class="theme8" data-value="8">
+													<i class="layui-icon ukefu-im-check">&#xe618;</i>
+												</div>
 											</div>
 										</div>
 										<div class="ukefu-webim-tl" style="clear:both;">3、选择入口按钮位置</div>
@@ -315,6 +318,10 @@
 												<div class="ukefu-im-item theme6 <#if inviteData?? && inviteData.consult_dialog_color?? && inviteData.consult_dialog_color == '6'>ukefu-im-checked</#if>" data-class="theme6" data-value="6">
 													<i
 														class="layui-icon ukefu-im-check">&#xe618;</i>
+												</div>
+												<div class="ukefu-im-item theme8 <#if inviteData?? && inviteData.consult_dialog_color?? && inviteData.consult_dialog_color == '8'>ukefu-im-checked</#if>" data-class="theme8" data-value="8">
+													<i
+															class="layui-icon ukefu-im-check">&#xe618;</i>
 												</div>
 											</div>
 										</div>
@@ -449,7 +456,7 @@
 															function() {
 																$(this)
 																		.removeClass(
-																				"theme1 theme2 theme3 theme4 theme5 theme6")
+																				"theme1 theme2 theme3 theme4 theme5 theme6 theme8")
 																		.addClass(
 																				theme);
 															});
@@ -469,7 +476,7 @@
 															function() {
 																$(this)
 																		.removeClass(
-																				"theme1 theme2 theme3 theme4 theme5 theme6")
+																				"theme1 theme2 theme3 theme4 theme5 theme6 theme8")
 																		.addClass(
 																				theme);
 															});
